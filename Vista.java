@@ -4,7 +4,7 @@ package graficoarraylist;
 import java.util.ArrayList;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileWriter;
+import java.io.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
@@ -26,8 +26,9 @@ public class Vista extends javax.swing.JFrame {
     String cedula = "";
     String telefono = "";
     
-    //definir ArrayList que se usará en el proyecto
+   
     ArrayList<Alumno> lista = new ArrayList<>();
+
        
     public Vista() {
         initComponents();
@@ -36,7 +37,8 @@ public class Vista extends javax.swing.JFrame {
         
         jTableAlumno.addMouseListener(new MouseAdapter(){
         DefaultTableModel model = new DefaultTableModel();
-        
+        //DefaultTableModel model = (DefaultTableModel) jTableAlumno.getModel();
+       
         public void mouseClicked(MouseEvent e){
         int i = jTableAlumno.getSelectedRow();
         nombre = (jTableAlumno.getValueAt(i, 0).toString());
@@ -72,6 +74,7 @@ public class Vista extends javax.swing.JFrame {
         BtnModificar = new javax.swing.JButton();
         BtnGuardaModificacion = new javax.swing.JButton();
         BtnGeneraTxt = new javax.swing.JButton();
+        BtnImportaTxt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -146,6 +149,13 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        BtnImportaTxt.setText("Importar .txt");
+        BtnImportaTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnImportaTxtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -153,35 +163,40 @@ public class Vista extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2))
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1)
-                            .addComponent(txtNombre)
-                            .addComponent(txtApellido)
-                            .addComponent(txtCedula)
-                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jLabel2))
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1)
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtApellido)
+                                    .addComponent(txtCedula)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(BtnRegistrar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(BtnEliminar)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(BtnModificar))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(BtnGuardaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(BtnGeneraTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BtnRegistrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BtnEliminar)
-                                .addGap(12, 12, 12)
-                                .addComponent(BtnModificar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BtnGuardaModificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(BtnGeneraTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101)
+                        .addComponent(BtnImportaTxt)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -217,32 +232,13 @@ public class Vista extends javax.swing.JFrame {
                             .addComponent(BtnGuardaModificacion)
                             .addComponent(BtnGeneraTxt)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnImportaTxt)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
-
-        //inicializamos el objeto y en el constructor, las 4 variables con las funciones
-        //para traer los datos de los textfields.
-        Alumno alumno = new Alumno(txtNombre.getText(),txtApellido.getText(),txtCedula.getText(),txtTelefono.getText());
-        //añado el registro a mi lista por medio del método add
-        lista.add(alumno);
-        //llamo a función para imprimir los datos de los textFields en la tabla:
-        mostrar();
-        //funciones para borrar textos residuales en textFields
-        txtNombre.setText("");
-        txtApellido.setText("");
-        txtCedula.setText("");
-        txtTelefono.setText("");
-        
-    }//GEN-LAST:event_BtnRegistrarActionPerformed
 
     //función para imprimir los datos de los textFields en la tabla:
     public void mostrar()
@@ -270,7 +266,29 @@ public class Vista extends javax.swing.JFrame {
     }
     
     
-    
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+
+    private void BtnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegistrarActionPerformed
+
+        //inicializamos el objeto y en el constructor, las 4 variables con las funciones
+        //para traer los datos de los textfields.
+        Alumno alumno = new Alumno(txtNombre.getText(),txtApellido.getText(),txtCedula.getText(),txtTelefono.getText());
+        //añado el registro a mi lista por medio del método add
+        lista.add(alumno);
+        //llamo a función para imprimir los datos de los textFields en la tabla:
+        mostrar();
+        //funciones para borrar textos residuales en textFields
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtCedula.setText("");
+        txtTelefono.setText("");
+        
+    }//GEN-LAST:event_BtnRegistrarActionPerformed
+
+
     private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTelefonoActionPerformed
@@ -283,7 +301,6 @@ public class Vista extends javax.swing.JFrame {
         lista.remove(i);
         }
         }
-        
         //invoco función mostrar() para actualizar la tabla:
         mostrar();
         
@@ -323,33 +340,68 @@ public class Vista extends javax.swing.JFrame {
         
                
 try{
-        FileWriter pw = new FileWriter("archivocreado5.txt"); //nombre del archivo
+        FileWriter pw = new FileWriter("archivocreado.txt"); //nombre del archivo
         
-// Bucle For para recorrer la lista:
+    // Bucle For para recorrer la lista:
         for (int i = 0; i < lista.size(); i++) {
-            if(cedula.equals(lista.get(i).getCedula())){      // cedula será el id único
-                
-                pw.write(lista.get(i).getNombre()+",");
-                
-                pw.write(lista.get(i).getApellido()+",");
-                
-                pw.write(lista.get(i).getCedula()+",");
-                
-                pw.write(lista.get(i).getTelefono());
-                
-        }     
-    }                                                     
-    pw.close();
-    JOptionPane.showMessageDialog(null, "Archivo Creado");
-}catch(Exception err){
-        System.out.println(err);    
-    } 
 
-       mostrar();
+                pw.write(lista.get(i).getNombre()+",");
+                pw.write(lista.get(i).getApellido()+",");
+                pw.write(lista.get(i).getCedula()+","); 
+                pw.write(lista.get(i).getTelefono()+"\n");
+      
+        }                                                     
+        pw.close();
+        JOptionPane.showMessageDialog(null, "Archivo Creado");
+        }catch(Exception err){
+            System.out.println(err);    
+            } 
+    
+    mostrar();
         
     }//GEN-LAST:event_BtnGeneraTxtActionPerformed
-      
 
+    private void BtnImportaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnImportaTxtActionPerformed
+     
+       //Nombre y ruta del archivo a importar
+       String filePath ="archivocreado5.txt";
+       File file = new File(filePath); 
+
+       try{
+           BufferedReader buffer = new BufferedReader (new FileReader(file));
+       
+           Object[] filasTxt = buffer.lines().toArray();
+           //System.out.println("cant de registros: " + filasTxt.length);
+       
+           String matriz[][]=new String[filasTxt.length][4];
+           
+           //for para hacer el split y recorrer el la matriz del jTableAlumno según la cant. de filas del .txt  
+           for (int x = 0; x < filasTxt.length; x++){
+       
+           String fila = filasTxt[x].toString().trim();
+           String[] campo = fila.split(",");
+                     
+           matriz[x][0]= campo[0];                      
+           matriz[x][1]= campo[1];                      
+           matriz[x][2]= campo[2];                   
+           matriz[x][3]= campo[3];
+                     
+           }
+        
+        jTableAlumno.setModel(new javax.swing.table.DefaultTableModel(
+            matriz,
+            new String [] {
+                "Nombre", "Apellido", "Cédula", "Teléfono"
+            }
+        ));        
+
+       }catch (Exception err){
+       System.out.println(err);  
+       }
+
+    }//GEN-LAST:event_BtnImportaTxtActionPerformed
+
+ 
     /**
      * @param args the command line arguments
      */
@@ -389,6 +441,7 @@ try{
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGeneraTxt;
     private javax.swing.JButton BtnGuardaModificacion;
+    private javax.swing.JButton BtnImportaTxt;
     private javax.swing.JButton BtnModificar;
     private javax.swing.JButton BtnRegistrar;
     private javax.swing.JLabel jLabel1;
